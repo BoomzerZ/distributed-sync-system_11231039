@@ -1,0 +1,6 @@
+aiohttp==3.9.1
+asyncio==3.4.3
+redis==5.0.1
+pytest==8.1.1
+locust==2.26.0
+prometheus_client==0.20.0

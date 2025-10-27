@@ -1,0 +1,61 @@
+version: "3.9"
+
+services:
+  # === Distributed Lock Nodes ===
+  lock-node1:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.node
+    environment:
+      - NODE_ID=node1
+      - HOST=0.0.0.0
+      - PORT=8000
+      - PEERS=http://lock-node2:8001,http://lock-node3:8002
+    ports:
+      - "8000:8000"
+    command: python -m src.main --node node1 --port 8000
+
+  lock-node2:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.node
+    environment:
+      - NODE_ID=node2
+      - HOST=0.0.0.0
+      - PORT=8001
+      - PEERS=http://lock-node1:8000,http://lock-node3:8002
+    ports:
+      - "8001:8001"
+    command: python -m src.main --node node2 --port 8001
+
+  lock-node3:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.node
+    environment:
+      - NODE_ID=node3
+      - HOST=0.0.0.0
+      - PORT=8002
+      - PEERS=http://lock-node1:8000,http://lock-node2:8001
+    ports:
+      - "8002:8002"
+    command: python -m src.main --node node3 --port 8002
+
+  # === Distributed Queue Node ===
+  queue-node:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.node
+    ports:
+      - "9000:9000"
+    command: python -m src.nodes.queue_node
+
+  # === Cache Node (MESI) ===
+  cache-node1:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.node
+    ports:
+      - "9100:9100"
+    command: python -m src.nodes.cache_node
+
