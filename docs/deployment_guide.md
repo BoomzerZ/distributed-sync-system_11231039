@@ -23,9 +23,7 @@ cd docker
 docker compose up --build
 
 ## Testing
-Lock test: curl http://127.0.0.1:8000/lock
-
-Queue test: curl http://127.0.0.1:9000/queue
-
-Cache test: curl http://127.0.0.1:9100/cache
+- Lock test: curl http://127.0.0.1:8000/lock
+- Queue test: curl http://127.0.0.1:9000/queue
+- Cache test: curl http://127.0.0.1:9100/cache
 
